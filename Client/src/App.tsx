@@ -30,7 +30,7 @@ const App = () => {
   const fetchUserData = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/user`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/user`,
         {
           withCredentials: true, // Important to send cookies!
           headers: {
@@ -40,7 +40,7 @@ const App = () => {
       );
       const data = res.data;
       dispatch(loginUser(data.user));
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }

@@ -48,33 +48,18 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoute);
-
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-
-// app.get(
-//   "/auth/google/callback",
-//   passport.authenticate("google", {
-//     successRedirect: "http://localhost:5173/auth/login/success",
-//     failureRedirect: "http://localhost:5173/auth/login",
-//   })
-// );
-
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    // The user and token were attached in `passport.use` done()
     const { token } = req.user; // token was passed from passport.use
-
-    // Redirect to frontend with token as query param
     res.redirect(`http://localhost:5173/auth/login/success?token=${token}`);
   }
 );
-
-app.get("/auth/user", authMiddleware, getUserProfile);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

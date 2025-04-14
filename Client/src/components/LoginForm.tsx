@@ -1,8 +1,10 @@
 import { loginUser } from "@/store/authSlice";
 import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import BtnLoader from "./BtnLoader";
 
 type LoginFormInputs = {
   email: string;
@@ -16,18 +18,21 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
+  const [loginLoading, setLoginLoading ] = useState(false)
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onSubmit = async (data: LoginFormInputs) => {
-    console.log("Login data:", data);
+    // console.log("Login data:", data);
     // Perform login logic here
+    setLoginLoading(true)
 
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", data, {
         withCredentials: true,
       });
-      console.log("Login response:", response.data);
+      // console.log("Login response:", response.data);
       if (response.data.success) {
         dispatch(loginUser(response.data.user));
         localStorage.setItem("token", response.data.token); // Store token in localStorage
@@ -42,11 +47,13 @@ export default function LoginForm() {
       console.error("Login error:", error);
       // Handle error (e.g., show a notification)
       
+    } finally {
+      setLoginLoading(false);
     }
   };
 
   const handleGoogleLogin = () => {
-    console.log("Google Login clicked");
+    // console.log("Google Login clicked");
     window.open('http://localhost:5000/auth/google', '_self');
 
   };
@@ -112,7 +119,7 @@ export default function LoginForm() {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition cursor-pointer"
           >
-            Login
+            {loginLoading ? <BtnLoader/> : "Login"}
           </button>
         </form>
 

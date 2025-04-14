@@ -2,7 +2,7 @@ import { loginUser } from "@/store/authSlice";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const GoogleLoginsuccess = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const GoogleLoginsuccess = () => {
   const fetchUser = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/user`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/user`,
         {
           withCredentials: true, // Important to send cookies!
           headers: {
@@ -20,7 +20,7 @@ const GoogleLoginsuccess = () => {
         }
       );
       const data = res.data;
-      console.log(data);
+      // console.log(data);
       dispatch(loginUser(data));
         navigate("/");
     } catch (error) {
@@ -31,7 +31,7 @@ const GoogleLoginsuccess = () => {
 
   useEffect(() => {
     const token = new URLSearchParams(window.location.search).get("token");
-    console.log({ token });
+    // console.log({ token });
     if (token) {
       localStorage.setItem("token", token);
     } else {

@@ -11,11 +11,9 @@ export const authMiddleware = (req, res, next) => {
         message: "Unauthorized: No token provided",
       });
     }
-    console.log("Token:", token);
+    // console.log("Token:", token);
     
-    // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // Attach the user to the request object
     req.user = decoded;
     next();
   } catch (error) {
