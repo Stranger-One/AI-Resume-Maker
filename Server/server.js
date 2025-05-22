@@ -8,8 +8,6 @@ import "./utils/passport.js";
 import authRoute from "./routes/AuthRoute.js";
 import session from "express-session";
 import passport from "passport";
-import { authMiddleware } from "./middlewares/authMiddleware.js";
-import { getUserProfile } from "./controllers/AuthController.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,7 +32,6 @@ app.use(
     cookie: {
       secure: false, // true if using https
       httpOnly: true,
-      sameSite: "lax", // or 'none' if using HTTPS
     },
   })
 );
